@@ -1,0 +1,44 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>My First Web Game</title>
+    <link rel="stylesheet" href="styles/cube.css">
+  </head>
+  <body>
+    <div id="head">
+      <h1>Cube Connect</h1>
+    </div>
+    <div id="main">
+      <div id="cube">
+        <div id="intro">
+          <p>Welcome to my first web game!<br>Before you start, please read the following instructions first.</p>
+          <ol>
+            <li>Click one of the three buttons below that indicates size of the board to start a game,
+                you will see pairs of colored blocks with a black frame embedded in, here we call them "odd" blocks.
+                For those which are not odd blocks, are labelled as "even".</li>
+            <li>Your goal is to match all the pairs through white blocks without any intersections.</li>
+            <li>Once you click on an odd block, you are able and only be able to color the even blocks with its color by clicking them as well.
+                If you click on an odd block with the same color, you will be incapable of coloring other blocks.</li>
+            <li>As you connected a pair, the shortest path between the pair would be highlighted by white border.</li>
+            <li>If you successfully completed the level or just found it too hard for you,
+                you could take another challenge by clicking the size buttons below. Gameplay record will only be collected upon finishing.</li>
+            <li>The more you play, the more grateful I am!<br>Enjoy and have fun!</li>
+          </ol>
+        </div>
+        <div id="TopFace"></div>
+        <div id="LeftFace"></div>
+        <div id="RightFace"></div>
+        <div id="pass"></div>
+      </div>
+      <div id="time"><p></p></div>
+      <div id="buttons">
+        <button id="Clear">Clear</button>
+        <button id="3x" class="Boardsize">3x3x3</button>
+        <button id="4x" class="Boardsize">4x4x4</button>
+        <button id="5x" class="Boardsize">5x5x5</button>
+      </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="scripts/cube4.js"></script>
+  </body>
+</html>
