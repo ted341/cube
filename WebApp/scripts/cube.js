@@ -1,67 +1,56 @@
+const log = new URL('https://script.google.com/macros/s/AKfycbxsvNzRf4sXFbgCZrovJNipy9rK3rYdcN5_o5PQJSrcA5DN985M/exec');
 const bgname = ['darksalmon','tomato','orange','palegreen','dodgerblue','mediumseagreen','slateblue','violet']
 const bghex = ['#e9967a','#ff6347','#ffa500','#98fb98','#1e90ff','#3cb371','#6a5acd','#ee82ee']
+const top3 = [0, 3, 8, 1, 2, 7, 4, 5, 6], top4 = [0, 3, 8, 15, 1, 2, 7, 14, 4, 5, 6, 13, 9, 10, 11, 12],
+      top5 = [0, 3, 8, 15, 24, 1, 2, 7, 14, 23, 4, 5, 6, 13, 22, 9, 10, 11, 12, 21, 16, 17, 18, 19, 20];
 
-var size, nblocks, cnum, arr; // arr: list of odds
+var col, toplist;
 function createBoard(){
 
-  // initialize
+  toplist = []; // buffer
   arr = [];
-  nblocks = 3*size**2;
-  cnum = Math.floor(Math.random()*3 + size);
-  pass = Array(cnum).fill(false);
 
-  spath = Array(cnum);
-  for (let i = 0; i < cnum; i++)
-    spath[i] = [];
+  col = Array(size*2);
+  for (let i = 0; i < size; i++){
+    col[i] = i*2 + 1;
+    col[i + size] = size*2;
+  }
+
+  var t = document.getElementById("TopFace"),
+      l = document.getElementById("LeftFace"),
+      r = document.getElementById("RightFace");
 
   // create blank element of board
-  for (let i = 0; i < nblocks; i++){
+  for (let i = 0; i < size*2; i++){
+    for (let j = 0; j < col[i]; j++){
 
-    let newel = document.createElement('div');
-    newel.id = i;
-    newel.className = "square";
-    newel.style.backgroundColor = 'white';
-    newel.addEventListener('click', changeColor, false);
+      let newel = document.createElement('div');
 
-    switch(size){
-      case 3:
-        newel.style.height = newel.style.width = '50px';
-        break;
-      case 4:
-        newel.style.height = newel.style.width = '38px';
-        break;
-      case 5:
-        newel.style.height = newel.style.width = '30px';
-        break;
-    }
+      newel.id = i*size*2+j;
+      newel.className = "square";
+      newel.style.backgroundColor = 'white';
+      newel.style.height = newel.style.width = String(150/size) + "px";
+      newel.addEventListener('click', changeColor, false);
 
-    if (i < size ** 2) r.appendChild(newel);
-    else if (i < 2 * size ** 2) t.appendChild(newel);
-    else l.appendChild(newel);
-  }
-
-  // randomly pick odds
-  while(arr.length < cnum*2){
-    let randnum = Math.floor(Math.random()*nblocks);
-    if(arr.indexOf(randnum) > -1) continue;
-
-    // valid number
-    arr[arr.length] = randnum;
-
-    // set odd style
-    let img = 'url("data/frame.png")';
-    let e = document.getElementById(randnum).style;
-    e.backgroundImage = img;
-    e.backgroundPosition = "center";
-    e.backgroundRepeat = "no-repeat";
-    e.backgroundColor = bgname[Math.floor((arr.length-1)/2)];
-
-    switch(size){
-      case 3: e.backgroundSize = "40px 40px"; break;
-      case 4: e.backgroundSize = "30px 30px"; break;
-      case 5: e.backgroundSize = "24px 24px"; break;
+      if (i < size) toplist.push(newel);
+      else if (j < size) l.appendChild(newel);
+      else r.appendChild(newel);
     }
   }
+
+  for (let i = 0; i < toplist.length; i++)
+    switch (size){ // raarrange top face element
+      case 3: t.appendChild(toplist[top3[i]]); break;
+      case 4: t.appendChild(toplist[top4[i]]); break;
+      case 5: t.appendChild(toplist[top5[i]]); break;
+    }
+
+  fetchBoard().then(q => {
+    console.log(q);
+    pass  = Array(cnum).fill(false);
+    spath = new Array(cnum); // shortest path container
+    for (let i = 0; i < cnum; i++) spath[i] = [];
+  })
 
   setBoardStyle();
   constructEdgeList();
@@ -71,9 +60,9 @@ function destroyBoard(){
 
   if (size === undefined) return;
 
-  var top = document.querySelector('#TopFace'),
-      left = document.querySelector('#LeftFace'),
-      right = document.querySelector('#RightFace');
+  var top = document.getElementById("TopFace"),
+      left = document.getElementById("LeftFace"),
+      right = document.getElementById("RightFace");
 
   var topElement = document.querySelectorAll('#TopFace .square'),
       leftElement = document.querySelectorAll('#LeftFace .square'),
@@ -93,92 +82,126 @@ function resetBoard(){
 
   var el = document.getElementsByClassName("square");
   for (let i = 0; i < el.length; i++){
-
     let idx = arr.indexOf(parseInt(el[i].id));
     if (idx > -1) el[i].style.backgroundColor = bgname[Math.floor(idx/2)];
     else el[i].style.backgroundColor = "white";
+    el[i].style.borderColor = "black";
   }
 }
 
-(function fetchBoard(){
-  fetch('data/3.json', {method: 'get'})
-  .then(response => {
-    //ok 代表狀態碼在範圍 200-299
-    if (!response.ok) throw new Error(response.statusText)
-    return response.json();
-  })
-  .catch(err => console.log(err))
-  .then(t => console.log(t))
-})();
+function generateBoard(){
+  // randomly pick odds
+  while(arr.length < cnum*2){
 
-var t = document.getElementById("TopFace"),
-    l = document.getElementById("LeftFace"),
-    r = document.getElementById("RightFace");
+    let a = Math.floor(Math.random()*size*2),
+        b = Math.floor(Math.random()*col[a]),
+        c = a*size*2+b;
+
+    if(arr.indexOf(c) > -1) continue;
+    arr.push(c);
+    setOddStyle(c);
+  }
+}
+
+var cnum, arr; // arr: list of odds
+async function fetchBoard(){
+
+  try {
+    var res = await fetch('data/' + String(size) + '.json');
+    var board = await res.json();
+  } catch(e){ return Promise.reject(e); }
+
+  var index = Math.floor(Math.random()*Object.keys(board).length);
+  var pairs = board[index].pairs;
+  cnum = parseInt(board[index].color);
+
+  for (let i = 0; i < pairs.length; i++){
+    let id = parseInt(pairs[i][0])*size*2+parseInt(pairs[i][1]);
+    arr.push(id);
+    setOddStyle(id);
+  }
+
+  return Promise.resolve(board[index]);
+}
+
+function setOddStyle(id){
+  let img = 'url("data/frame.png")';
+  let e = document.getElementById(id).style;
+  e.backgroundImage = img;
+  e.backgroundPosition = "center";
+  e.backgroundRepeat = "no-repeat";
+  e.backgroundColor = bgname[Math.floor((arr.length-1)/2)];
+
+  let len = String(120/size) + "px";
+  e.backgroundSize = len + " " + len;
+}
+
 function setBoardStyle(){
 
-  var trans_t = ""
+  var t = document.getElementById("TopFace").style,
+      l = document.getElementById("LeftFace").style,
+      r = document.getElementById("RightFace").style;
+  var trans = "rotate(90deg) translate(60px,-168px) \
+               skew(30deg,-60deg) scale(0.58, 1)";
 
   switch(size){
     case 3:
-      t.style.height = t.style.width = '162px';
-      r.style.height = r.style.width = '162px';
-      l.style.height = l.style.width = '162px';
+      t.height = t.width = '162px';
+      r.height = r.width = '162px';
+      l.height = l.width = '162px';
 
-      t.style.transform = "rotate(-90deg) translate(-60px,168px) skew(30deg,-60deg) scale(0.58, 1)";
-      r.style.transform = "translate(-89px,26px) skew(0deg,-30deg)";
-      l.style.transform = "rotate(90deg) translate(25px,-87px) skew(-30deg,0deg)";
+      t.transform = trans;
+      r.transform = "translate(-89px,26px)";
+      l.transform = "translate(87px,26px)";
       break;
     case 4:
-      t.style.height = t.style.width = '168px';
-      r.style.height = r.style.width = '168px';
-      l.style.height = l.style.width = '168px';
+      t.height = t.width = '168px';
+      r.height = r.width = '168px';
+      l.height = l.width = '168px';
 
-      t.style.transform = "rotate(-90deg) translate(-60px,168px) skew(30deg,-60deg) scale(0.58, 1)";
-      r.style.transform = "translate(-80px, 25px) skew(0deg,-30deg)";
-      l.style.transform = "rotate(90deg) translate(24px, -84px) skew(-30deg,0deg)";
+      t.transform = trans;
+      r.transform = "translate(-79px, 22px)";
+      l.transform = "translate(87px, 22px)";
       break;
     case 5:
-      t.style.height = t.style.width = '170px';
-      r.style.height = r.style.width = '170px';
-      l.style.height = l.style.width = '170px';
+      t.height = t.width = '170px';
+      r.height = r.width = '170px';
+      l.height = l.width = '170px';
 
-      t.style.transform = "rotate(-90deg) translate(-60px,168px) skew(30deg,-60deg) scale(0.58, 1)";
-      r.style.transform = "translate(-77px,24px) skew(0deg,-30deg)";
-      l.style.transform = "rotate(90deg) translate(24px,-83px) skew(-30deg,0deg)";
+      t.transform = trans;
+      r.transform = "translate(-77px,24px)";
+      l.transform = "translate(83px,24px)";
       break;
   }
+
+  r.transform += "skew(0deg,-30deg)";
+  l.transform += "skew(0deg,30deg)";
 }
 
 var edge;
 function constructEdgeList(){
 
-  edge = Array(nblocks);
+  var dsize = size*2;
+  edge = Array(dsize**2);
 
-  for (let i = 0; i < nblocks; i++)
-  {
-    let plane = size**2;
+  for (let i = 0; i < dsize**2; i++)
     edge[i] = [];
 
-  	for (let j = 0; j < nblocks; j++){
+  for (let i = 1; i < dsize; i++){ // horizontal
+    for (let j = 0; j < Math.floor(col[i]/2); j++){
+      //console.log((i - 1)*dsize + j);
+      edge[(i - 1)*dsize + j].push(i*dsize + j);
+      edge[i*dsize + j].push((i - 1)*dsize + j);
+      edge[(i - 1)*dsize + col[i-1] - 1 - j].push(i*dsize + col[i] - 1 - j);
+      edge[i*dsize + col[i] - 1 - j].push((i - 1)*dsize + col[i-1] - 1 - j);
+    }
+  }
 
-      if (i > j){
-    		// section Y
-    		if (j % plane < size)
-    			if ((i%plane) == (j%plane*size) && (Math.floor(j/plane)+1) == Math.floor(i/plane))
-            {edge[i].push(j); edge[j].push(i);}
-
-    		if (j % plane % size == 0) // 0, 3, 6
-    			if ((j%plane) == (i%plane*size) && (Math.floor(j/plane)+2) == Math.floor(i/plane))
-      			{edge[i].push(j); edge[j].push(i);}
-
-    		// general...
-    		if (i == (j+1) && Math.floor(j/size) == Math.floor(i/size))
-          {edge[i].push(j); edge[j].push(i);}
-
-    		if (i == (j+size) && Math.floor(j/plane) == Math.floor(i/plane))
-          {edge[i].push(j); edge[j].push(i);}
-      }
-  	}
+  for (let i = 0; i < dsize; i++){ // vertical
+    for (let j = 0; j < col[i]-1; j++){
+      edge[i*dsize + j].push(i*dsize + j + 1);
+      edge[i*dsize + j + 1].push(i*dsize + j)
+    }
   }
 }
 
@@ -194,21 +217,23 @@ function changeColor(){
   }
   else if (curColor != clkColor && curColor != 'white'){
     this.style.backgroundColor = curColor;
-    if (checkConnection())
+    if (checkConnection()){
       document.getElementById("pass").innerHTML = "Complete!";
+      complete = true;
+    }
   }
 }
 
+var size;
 function changeSize(){
-
+  // entrance of the web app
   destroyBoard();
 
-  switch(this.id){
-    case "3x": size = 3; break;
-    case "4x": size = 4; break;
-    case "5x": size = 5; break;
-  }
+  // resetting
+  size = parseInt(this.id[0]);
   curColor = "white";
+  complete = false;
+  document.getElementById("pass").innerHTML = "";
 
   createBoard();
 
@@ -219,11 +244,11 @@ function changeSize(){
   timer();
 }
 
-var pass, spath;
-var log = new URL('https://script.google.com/macros/s/AKfycbxsvNzRf4sXFbgCZrovJNipy9rK3rYdcN5_o5PQJSrcA5DN985M/exec');
+var nblocks, pass, spath;
 function checkConnection(){
 
   var finish = true;
+  nblocks = 3*size**2;
 
   for (let j = 0; j < cnum; j++){
 
@@ -282,30 +307,37 @@ function checkConnection(){
   }
 
   if (finish){
-    // all color is connected
-    // stop timer when finish
+    // stop timer when all color is connected
     clearInterval(timerId);
-    ///*
-    let formRecord = new FormData();
-    //formRecord.append('name', person);
-    formRecord.append('duration', time);
-    formRecord.append('size', size);
-    formRecord.append('color', cnum);
-    console.log(formRecord);
-
-    //let params = {name: person, duration: time, size: size, color: cnum};
-    //log.search = new URLSearchParams(params);
-
-    fetch(log, { method: 'post', body: formRecord, mode: 'cors', headers: {'Content-Type': 'multipart/form-data'}})
-    //fetch(log, { method: 'get', mode: 'no-cors'})
-    .then(response => {
-      if (!response.ok) throw new Error(response.statusText)
-    })
-    .catch(err => console.log(err))
-    //*/
+    postRecord();
     return true;
   }
   return false;
+}
+
+function postRecord(){
+  ///*
+  let record = { duration: time, size: size, color: cnum }
+  let form = new FormData();
+  form.append('duration', time);
+  form.append('size', size);
+  form.append('color', cnum);
+  //let params = {name: person, duration: time, size: size, color: cnum};
+  //log.search = new URLSearchParams(params);
+  /*
+  fetch(log, { method: 'options', headers: {'Access-Control-Request-Method': 'post', 'Access-Control-Request-Headers': 'Content-Type'}})
+  .then(preflight => {
+    if (!preflight.ok) throw new Error(preflight.statusText)
+
+  })
+  //*/
+  fetch(log, { method: 'post', body: JSON.stringify(record), mode: 'cors', credentials: 'include', headers: {'Content-Type': 'application/json'}})
+  .then(response => {
+    if (!response.ok) throw new Error(response.statusText)
+    return response.text()
+  }).catch(err => console.log(err))
+  .then(t => console.log(t))
+  //*/
 }
 
 var time, timerId;
@@ -344,8 +376,8 @@ function timer(){
   }
 }
 
-document.getElementById("clear").onclick = function(){resetBoard()};
-
 var button = document.getElementsByClassName("boardsize");
 for (let i = 0; i < button.length; i++)
   button[i].addEventListener('click', changeSize, false);
+
+document.getElementById("clear").onclick = resetBoard;
