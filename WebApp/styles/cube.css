@@ -1,0 +1,97 @@
+#head{
+  position: static;
+  width: 100%;
+  text-align: center;
+  background-color: #e0e0e0;
+}
+#head>h1{
+  font-family: impact;
+  font-size: 3em;
+}
+#main{
+  position: static;
+  width: 100%;
+  height: 600;
+  text-align: center;
+  background-color: #e0e0e0;
+}
+#cube{
+  position: relative;
+  top: 5%;
+  height: 500px;
+  width: 500px;
+  background-color: #fffaaa;
+  margin: 0 auto;
+}
+#intro{
+  position: relative;
+  top: 5%;
+  font-family: Courier, monospace;
+  width: 92%;
+  margin: 0 auto;
+}
+#intro p { font-size: 1.2em; }
+#intro li{
+  font-size: 0.8em;
+  text-align: left;
+  margin-bottom: 10px;
+}
+#TopFace{
+  position: relative;
+  background-color: #fce79200;
+  left: 33.8%;
+  top: 11.8%;
+}
+#LeftFace{
+  position: relative;
+  float: right;
+  right: 50%;
+  bottom: -5%;
+  background-color: #b7fc9200;
+}
+#RightFace{
+  position: relative;
+  float: left;
+  left: 50%;
+  bottom: -5%;
+  background-color: #92e7fc00;
+}
+#pass{
+  position: relative;
+  text-align: center;
+  top: 45%;
+  margin: 0 auto;
+}
+#pass>p{
+  font-family: Brush Script MT, Brush Script Std, cursive;
+  font-size: 2.5em;
+  font-weight: bolder;
+  color: gold;
+}
+#time{
+  position: relative;
+  text-align: center;
+  margin: 0 auto;
+  top: 5%;
+  height: 30;
+}
+#time>p{
+  font-family: Arial, sans-serif;
+  font-weight: bold;
+  font-size: 1.5em;
+  margin: 1% auto;
+}
+.square{
+  position: relative;
+  float: left;
+  border: solid 2px #000;
+}
+#buttons{
+  position: relative;
+  margin: 0 auto;
+  top: 5%;
+  height: 20;
+}
+button{
+  position: relative;
+}
