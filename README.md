@@ -4,6 +4,4 @@ TBD
 ## Motivation
 TBD
 ## Preview
-![](i1.png)
-
-![](i2.png)
+<img src="i1.png" width="400" height="600"/> <img src="i2.png" width="500" height="500"/>
