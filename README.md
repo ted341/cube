@@ -1,4 +1,4 @@
-# 3D-Logic Puzzle Generation and Difficulty Analysis
+# CS Project Documentation
 ## Preface
 TBD
 ## Motivation
