@@ -1,5 +1,5 @@
 # CS Project Documentation
-play now: [http://140.113.193.62/hcchang/public_html/myCubeGame.html](http://140.113.193.62/hcchang/public_html/myCubeGame.html)
+play now: [https://140.113.193.62/hcchang/public_html/myCubeGame.html](https://140.113.193.62/hcchang/public_html/myCubeGame.html)
 ## Preface
 TBD
 ## Motivation
