@@ -1,0 +1,3 @@
+b-nav > a:not([class="active disabled"]) {
+    color: white;
+}
