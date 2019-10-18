@@ -1,0 +1,84 @@
+<!doctype html>
+<html>
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, shrink-to-fit=no, user-scalable=no" />
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+        
+        <!-- Required Stylesheets -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        
+        <title>MyWebGame</title>
+        <link type="text/css" rel="stylesheet" href="styles/page_style.css" />
+    </head>
+    <body>
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title"><b>Cube Connect</b></div>
+                <ul class="card-header-tabs nav nav-tabs nav-fill">
+                    <li class="nav-item"><a class="nav-link active" href="#player">PLAY A GAME</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#maker">MAKE A PUZZLE</a></li>
+                </ul>
+            </div>
+            <div id="player" class="card-body container-fluid">
+                <div id="top" class="row">
+                    <div id="timer" class="col"></div>
+                    <div id="toolbar" class="btn-group" role="group" aria-label="toolbar">
+                        <button id="retry" type="button" class="btn btn-sm"><img src="data/retry.svg" class="img-fluid" alt="retry"></button>
+                        <button id="setting" type="button" class="btn"><img src="data/setting.svg" class="img-fluid" alt="setting"></button>
+                        <button id="tips" type="button" class="btn"><img src="data/info.svg" class="img-fluid" alt="info"></button>
+                    </div>
+                </div>
+                <div id="board" class="row">
+                    <div id="Center" class="col-12" align="center">
+                        <div id="center" class="facet"></div>
+                    </div>
+                    <div id="Left" class="col-6" align="right">
+                        <div id="left" class="facet"></div>
+                    </div>
+                    <div id="Right" class="col-6">
+                        <div id="right" class="facet"></div>
+                    </div>
+                </div>
+                <div id="bottom" class="row">
+                </div>
+            </div>
+            <div id="maker" class="card-body container-fluid">
+                <div class="row"><div class="col">
+                    <p>Hello World!</p>
+                </div></div>
+            </div>
+        </div>
+        
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        
+        <script src="scripts/style_class.js"></script>
+        <script src="scripts/game_logic.js"></script>
+    </body>
+</html>
+
+<!--div id="buttons">
+    <button id="Clear">Clear</button>
+    <button id="3x" class="Boardsize">3x3x3</button>
+    <button id="4x" class="Boardsize">4x4x4</button>
+    <button id="5x" class="Boardsize">5x5x5</button>
+</div-->
+
+<!--div id="intro">
+  <p>Welcome to my first web game!<br>Before you start, please read the following instructions first.</p>
+  <ol>
+    <li>Click one of the three buttons below that indicates size of the board to start a game,
+        you will see pairs of colored blocks with a black frame embedded in, here we call them "odd" blocks.
+        For those which are not odd blocks, are labelled as "even".</li>
+    <li>Your goal is to match all the pairs through white blocks without any intersections.</li>
+    <li>Once you click on an odd block, you are able and only be able to color the even blocks with its color by clicking them as well.
+        If you click on an odd block with the same color, you will be incapable of coloring other blocks.</li>
+    <li>As you connected a pair, the shortest path between the pair would be highlighted by white border.</li>
+    <li>If you successfully completed the level or just found it too hard for you,
+        you could take another challenge by clicking the size buttons below. Gameplay record will only be collected upon finishing.</li>
+    <li>The more you play, the more grateful I am!<br>Enjoy and have fun!</li>
+  </ol>
+</div-->
