@@ -49,6 +49,7 @@ html, body, .card {
 div[class^="block-"] {
     position: relative;
     float: left;
+    background-color: white;
     border-width: 5px;
     border-color: darkslategrey;
     border-style: solid;
