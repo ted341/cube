@@ -4,4 +4,9 @@ TBD
 ## Motivation
 TBD
 ## Preview
-<img src="i1.png" width="350" height="400"/> <img src="i2.png" width="380" height="480"/>
+v1 (without Bootstrap)
+<img src="pic_2.png" style="display:block; width:50%; margin: 10 auto;"/>
+<img src="pic_1.png" style="display:block; width:50%;"/> 
+
+v2 (with Bootstrap)
+<img src="pic_3.png" style="display:block; width:50%; margin: 10 auto;"/>
