@@ -4,4 +4,4 @@ TBD
 ## Motivation
 TBD
 ## Preview
-<img src="i1.png" width="300" height="400"/> <img src="i2.png" width="350" height="400"/>
+<img src="i1.png" width="300" height="400"/> <img src="i2.png" width="380" height="420"/>
