@@ -5,8 +5,8 @@ TBD
 TBD
 ## Preview
 v1 (without Bootstrap)
-<img src="pic_2.png" style="width:50%; margin: 10 auto;"/>
-<img src="pic_1.png" style="width:50%; margin: 10 auto;"/> 
+<img src="pic_2.png" style="margin: 10 auto;" width="50%"/>
+<img src="pic_1.png" style="margin: 10 auto;" width="50%"/> 
 
 v2 (with Bootstrap)
-<img src="pic_3.png" style="width:50%; margin: 10 auto;"/>
+<img src="pic_3.png" style="margin: 10 auto;" width="50%"/>
