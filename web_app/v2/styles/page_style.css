@@ -46,21 +46,15 @@ html, body, .card {
     padding: 0;
 }
 
-div[class^="block-"] {
+.block {
     position: relative;
     float: left;
     background-color: white;
-    border-width: 5px;
     border-color: darkslategrey;
     border-style: solid;
-    border-radius: 10px;
     margin: 0;
 }
 
-.block-3 {
-    width: 60px;
-    height: 60px;
-}
 
 #timer {
     font-family: Arial, sans-serif;

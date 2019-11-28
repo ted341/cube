@@ -2,16 +2,13 @@ const bgname = ['darksalmon','tomato','orange','palegreen','dodgerblue','mediums
 const root = 'https://people.cs.nctu.edu.tw/~hcchang0701/';
 
 $(function(){
-    size = 3;
-    sessionStorage.clear()
+    size = 4;
     $('.card-header-tabs>li').on("click", switchTab);
+    $('#retry').on("click", resetBoard);
+    sessionStorage.clear();
+    sessionStorage.cursorColor = "white";
     
-    generateNewPuzzle()
-    .then(() => {
-        sessionStorage.cursorColor = "white";
-        $block = $('div[class^="block-"]');
-        $block.on("click", colorBlock);
-    })
+    generateNewPuzzle();
 })
 
 function switchTab(){
@@ -54,6 +51,30 @@ async function generateNewPuzzle(){
     setConnections();
 }
 
+function destroyBoard(){
+    $("#center").empty();
+    $("#left").empty();
+    $("#right").empty();
+}
+
+function resetBoard(){
+
+    var sq = $(".block");
+    var arr = JSON.parse(sessionStorage.oddList);
+
+    for (s in sq){ // s is index of jquery object (string)
+        let idx = arr.indexOf(parseInt(sq.eq(s).attr("id")));
+        if (idx > -1) sq.eq(s).css("background-color", bgname[Math.floor(idx/2)]);
+        else sq.eq(s).css("background-color", "white");
+        sq.eq(s).css("border-color", "darkslategrey");
+        if (parseInt(s)+1 == sq.length) break;
+    }
+    
+    stopTiming();
+    $('#timer').html("00:00:00.000");
+    sessionStorage.startGame = "false";
+}
+
 function createWhiteBoard(){
     
     for (let i = 0; i < size; i++)
@@ -62,7 +83,12 @@ function createWhiteBoard(){
         {
             let el = $("<div></div>");
             el.attr("id", i*size**2+j);
-            el.attr("class", "block-" + size.toString());
+            el.attr("class", "block");
+            el.css("width", (180/size).toString()+'px');
+            el.css("height", (180/size).toString()+'px');
+            el.css("border-width", (8-size).toString()+'px');
+            el.css("border-radius", (10-2*(size-3)).toString()+'px');
+            el.on("click", colorBlock);
 
             switch(i) {
                 case 0: $("#right").append(el); break;
@@ -127,7 +153,7 @@ function setPuzzle(){
 
 function setConnections(){
     
-    if (sessionStorage.getItem('conn_' + String(size)) === null)
+    if (sessionStorage.getItem('conn' + size.toString()) === null)
     {
         var bpp = size * size, // blocks per plane
 	    blks = 3 * bpp; // total num of blocks
@@ -273,7 +299,7 @@ function checkClear(){
 
         if (flag){ // the color is connected
             for (let k = 0; k < sPath[i].length; k++)
-                $('#' + sPath[i][k].toString()).css('border-color', 'gainsboro');
+                $('#' + sPath[i][k].toString()).css('border-color', 'gray');
         }
         else finish = false;
     }
