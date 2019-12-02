@@ -1,8 +1,4 @@
 # 3D-Logic Puzzle Generation and Difficulty Analysis
-## Preface
-TBD
-## Motivation
-TBD
 ## Preview
 <h4>v1 (without Bootstrap) - <a href="https://people.cs.nctu.edu.tw/~hcchang0701/myCubeGame.html">play</a></h4>
 <div style="display:flex;">
