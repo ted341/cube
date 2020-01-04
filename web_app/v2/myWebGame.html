@@ -26,12 +26,16 @@
     <div class="card">
 
       <div class="card-header">
-        <div class="card-title"><b>Cube Connect</b></div>
+        <div class="card-title">
+          <b>Cube Connect</b>
+        </div>
         <ul class="card-header-tabs nav nav-tabs nav-fill">
           <li class="nav-item">
-            <a class="nav-link active" href="#player">PLAY A GAME</a></li>
+            <a class="nav-link active" href="#player">PLAY A GAME</a>
+          </li>
           <li class="nav-item">
-            <a class="nav-link" href="#maker">MAKE A PUZZLE</a></li>
+            <a class="nav-link" href="#maker">MAKE A PUZZLE</a>
+          </li>
         </ul>
       </div><!-- card-header -->
 
@@ -62,7 +66,7 @@
             </button>
 
           </div>
-        </div>
+        </div><!-- top -->
 
         <div id="board" class="row">
 
@@ -100,20 +104,20 @@
           <div class="modal-header">
             <h5 class="modal-title">Settings</h5>
             <button type="button" class="close" data-dismiss="modal">
-              <span aria-hidden="true">&times;</span>
+              <span>&times;</span>
             </button>
           </div>
 
           <div class="modal-body">
-            <div id="size" class="container-fluid">
+            <div class="container-fluid">
               <div id="size" class="row mb-3">
                 <div class="col-4">Size</div>
                 <div class="col-8">
 
                   <div class="btn-group" role="group">
-                    <button type="button" class="btn btn-outline-secondary">3</button>
-                    <button type="button" class="btn btn-outline-secondary">4</button>
-                    <button type="button" class="btn btn-outline-secondary">5</button>
+                    <button type="button" class="btn btn-outline-secondary" data-size="3">3</button>
+                    <button type="button" class="btn btn-outline-secondary" data-size="4">4</button>
+                    <button type="button" class="btn btn-outline-secondary" data-size="5">5</button>
                   </div>
 
                 </div>
@@ -123,9 +127,9 @@
                 <div class="col-8">
 
                   <div class="btn-group" role="group">
-                    <button type="button" class="btn btn-outline-secondary">4</button>
-                    <button type="button" class="btn btn-outline-secondary">5</button>
-                    <button type="button" class="btn btn-outline-secondary">6</button>
+                    <button type="button" class="btn btn-outline-secondary" data-color="4">4</button>
+                    <button type="button" class="btn btn-outline-secondary" data-color="5">5</button>
+                    <button type="button" class="btn btn-outline-secondary" data-color="6">6</button>
                   </div>
 
                 </div>
@@ -134,7 +138,7 @@
 
             <div class="modal-footer">
               <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
-              <button type="button" class="btn btn-success">Apply</button>
+              <button id="apply" type="button" class="btn btn-success" data-dismiss="modal">Apply</button>
             </div>
           </div>
         </div>
@@ -147,7 +151,7 @@
           <div class="modal-header">
             <h5 class="modal-title">Info</h5>
             <button type="button" class="close" data-dismiss="modal">
-              <span aria-hidden="true">&times;</span>
+              <span>&times;</span>
             </button>
           </div>
 

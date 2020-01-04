@@ -2,30 +2,37 @@ const bgname = ['darksalmon','tomato','orange','palegreen','dodgerblue','mediums
 const root = 'https://people.cs.nctu.edu.tw/~hcchang0701/';
 
 $(function(){
-  size = 4;
-  /*
-  // slider
-  $("#sliderSize").slider({
-    value: 3,
-    range: "min",
-    animate: true
-  });
-  
-  $("#sliderColor").slider({
-    value: 3,
-    range: "min",
-    animate: true
-  });
-  //*/
-  // event listeners
-  $('.card-header-tabs>li').on("click", switchTab);
-  $('#retry').on("click", resetBoard);
+  size = 3;
 
+  // event listeners
+  $('.card-header-tabs>li').on('click', switchTab);
+  $('#retry').on("click", resetBoard);
+  
+  $('#modalSetting #size button').each(function(){
+    $(this).click(changeSize);
+  });
+  $('#apply').on('click', applySetting);
+  
   sessionStorage.clear();
   sessionStorage.cursorColor = "white";
 
   generateNewPuzzle();
 })
+
+function changeSize(){
+  tempSize = this.dataset.size;
+}
+
+function changeColor(){
+  tempColor = this.dataset.color;
+}
+
+function applySetting(){
+  size = parseInt(tempSize);
+  //color = tempColor;
+  destroyBoard();
+  generateNewPuzzle();
+}
 
 function switchTab(){
   // caller: .nav-item
@@ -229,7 +236,6 @@ function colorBlock(){
     curColor = sessionStorage.cursorColor,
     list = JSON.parse(sessionStorage.oddList);
 
-  console.log(parseInt(this.id))
   if (list.indexOf(parseInt(this.id)) > -1) // click on odds
   {
     if (curColor == clkColor)
