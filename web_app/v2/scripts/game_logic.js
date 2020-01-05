@@ -2,20 +2,21 @@ const bgname = ['darksalmon','tomato','orange','palegreen','dodgerblue','mediums
 const root = 'https://people.cs.nctu.edu.tw/~hcchang0701/';
 
 $(function(){
-  size = 3;
-
+  
+  size = 3
+  sessionStorage.clear();
+  sessionStorage.cursorColor = "white";
+  sessionStorage.size = 3;
+  
   // event listeners
   $('.card-header-tabs>li').on('click', switchTab);
-  $('#retry').on("click", resetBoard);
+  $('#retry').on('click', resetBoard);
   
   $('#modalSetting #size button').each(function(){
     $(this).click(changeSize);
   });
   $('#apply').on('click', applySetting);
   
-  sessionStorage.clear();
-  sessionStorage.cursorColor = "white";
-
   generateNewPuzzle();
 })
 
@@ -30,6 +31,7 @@ function changeColor(){
 function applySetting(){
   size = parseInt(tempSize);
   //color = tempColor;
+  resetBoard();
   destroyBoard();
   generateNewPuzzle();
 }
@@ -96,6 +98,7 @@ function resetBoard(){
   stopTiming();
   $('#timer').html("00:00:00.000");
   sessionStorage.startGame = "false";
+  sessionStorage.endGame = "false";
 }
 
 function createWhiteBoard(){
@@ -124,15 +127,15 @@ function createWhiteBoard(){
 
 async function fetchPuzzle(){
 
-  let s = size.toString()
-  if (sessionStorage.getItem('puzzle' + s) === null)
+  let size = parseInt(sessionStorage.size);
+  if (sessionStorage.getItem(`puzzle-${size}`) == undefined)
   {    
     try 
     {
-      let data = await fetch('data/' + s + '.json').
+      let data = await fetch(`data/${size}.json`).
       then(res => { return res.json() });
-      sessionStorage.setItem('pnum' + s, Object.keys(data).length)
-      sessionStorage.setItem('puzzle' + s, JSON.stringify(data));
+      sessionStorage.setItem(`total-${size}`, Object.keys(data).length)
+      sessionStorage.setItem(`puzzle-${size}`, JSON.stringify(data));
     } 
     catch(e) { console.log(e) }
   }
@@ -140,14 +143,14 @@ async function fetchPuzzle(){
 
 async function fetchMapping(){
 
-  let s = size.toString()
-  if (sessionStorage.getItem('map' + s) === null)
+  let size = parseInt(sessionStorage.size);
+  if (sessionStorage.getItem(`map-${size}`) == undefined)
   {    
     try
     {
-      let data = await fetch('data/map-' + s + '.json').
+      let data = await fetch(`data/map-${size}.json`).
       then(res => { return res.text() });
-      sessionStorage.setItem('map' + s, data);
+      sessionStorage.setItem(`map-${size}`, data);
     }
     catch(e) { console.log(e) }
   }
@@ -155,19 +158,19 @@ async function fetchMapping(){
 
 function setPuzzle(){
 
-  let s = size.toString(),
-      index = Math.floor(Math.random()*parseInt(sessionStorage.getItem('pnum' + s))),
-      puzzle = JSON.parse(sessionStorage.getItem('puzzle' + s))[index],
-      mapping = JSON.parse(sessionStorage.getItem('map' + s)),
-      pairs = puzzle.pairs,
-      list = new Array(0);
+  let size    = parseInt(sessionStorage.size),
+      index   = Math.floor(Math.random()*parseInt(sessionStorage.getItem(`total-${size}`))),
+      puzzle  = JSON.parse(sessionStorage.getItem(`puzzle-${size}`))[index],
+      mapping = JSON.parse(sessionStorage.getItem(`map-${size}`)),
+      pairs   = puzzle.pairs,
+      list    = new Array(0);
 
   sessionStorage.cnum = puzzle.color;
 
   for (let i = 0; i < pairs.length; i++){
     let id = mapping[ pairs[i][0]*size*2+pairs[i][1] ];
-    $('#' + String(id)).css('background-color', bgname[Math.floor(i/2)]);
-    $('#' + String(id)).addClass('odd');
+    $(`#${id}`).css('background-color', bgname[Math.floor(i/2)]);
+    $(`#${id}`).addClass('odd');
     list.push(id);
   }
 
@@ -176,7 +179,9 @@ function setPuzzle(){
 
 function setConnections(){
 
-  if (sessionStorage.getItem('conn' + size.toString()) === null)
+  let size = parseInt(sessionStorage.size);
+  
+  if (sessionStorage.getItem(`conn-${size}`) == undefined)
   {
     var bpp = size * size, // blocks per plane
         blks = 3 * bpp; // total num of blocks
@@ -217,24 +222,24 @@ function setConnections(){
         }
       }
     }
-    sessionStorage.setItem('conn' + size.toString(), JSON.stringify(adj))
+    sessionStorage.setItem(`conn-${size}`, JSON.stringify(adj))
   }
 }
 
 function colorBlock(){
 
+  if (sessionStorage.endGame == 'true') return
+  
   if (sessionStorage.startGame != 'true')
   {
     sessionStorage.startGame = true;
     sessionStorage.endGame = false;
     startTiming();
-  }
-
-  if (sessionStorage.endGame == 'true') return
+  }  
 
   let clkColor = $(this).css('background-color'),
-    curColor = sessionStorage.cursorColor,
-    list = JSON.parse(sessionStorage.oddList);
+      curColor = sessionStorage.cursorColor,
+      list = JSON.parse(sessionStorage.oddList);
 
   if (list.indexOf(parseInt(this.id)) > -1) // click on odds
   {
@@ -260,16 +265,18 @@ function colorBlock(){
 
 function checkClear(){
 
-  let eList = JSON.parse(sessionStorage.getItem('conn' + size.toString())),
-      oList = JSON.parse(sessionStorage.oddList),
-      cnum  = parseInt(sessionStorage.cnum),
-      block = 3*size**2,
+  let size   = parseInt(sessionStorage.size),
+      eList  = JSON.parse(sessionStorage.getItem(`conn-${size}`)),
+      oList  = JSON.parse(sessionStorage.oddList),
+      cnum   = parseInt(sessionStorage.cnum),
+      block  = 3*size**2,
       finish = true;
 
-  if (sessionStorage.sList === undefined) { // shortest paths
+  if (sessionStorage.sList == undefined) { // shortest paths
     var sPath = new Array(cnum);
-    for (let i=0; i<cnum; i++) sPath[i] = []
-  } else sPath = JSON.parse(sessionStorage.sList)
+    for (let i=0; i<cnum; i++)
+      sPath[i] = []
+  } else { sPath = JSON.parse(sessionStorage.sList) }
 
   for (let i=0; i<cnum; i++)
   {
@@ -285,7 +292,7 @@ function checkClear(){
     vis[oList[i*2]] = true;
 
     while (sPath[i].length) // reset marker
-      $('#' + sPath[i].pop().toString()).css('border-color', 'darkslategrey');
+      $(`#${sPath[i].pop()}`).css('border-color', 'darkslategrey');
 
     while(que.length > 0 && !flag)
     {
@@ -293,7 +300,7 @@ function checkClear(){
       for (let j = 0; j < eList[tmp].length; j++)
       {
         let next = eList[tmp][j],
-            color = $('#' + next.toString()).css('background-color');
+            color = $(`#${next}`).css('background-color');
 
         if (!vis[next] && color == nameToRGB(bgname[i]))
         {
@@ -321,7 +328,7 @@ function checkClear(){
 
     if (flag){ // the color is connected
       for (let k = 0; k < sPath[i].length; k++)
-        $('#' + sPath[i][k].toString()).css('border-color', 'gray');
+        $(`#${sPath[i][k]}`).css('border-color', 'gray');
     }
     else finish = false;
   }
