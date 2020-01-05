@@ -3,7 +3,7 @@ const root = 'https://people.cs.nctu.edu.tw/~hcchang0701/';
 
 $(function(){
   
-  size = 3
+  tempSize = 3;
   sessionStorage.clear();
   sessionStorage.cursorColor = "white";
   sessionStorage.size = 3;
@@ -12,9 +12,10 @@ $(function(){
   $('.card-header-tabs>li').on('click', switchTab);
   $('#retry').on('click', resetBoard);
   
-  $('#modalSetting #size button').each(function(){
+  $('#modalSetting #size label').each(function(){
     $(this).click(changeSize);
   });
+  
   $('#apply').on('click', applySetting);
   
   generateNewPuzzle();
@@ -29,10 +30,9 @@ function changeColor(){
 }
 
 function applySetting(){
-  size = parseInt(tempSize);
+  sessionStorage.size = tempSize;
   //color = tempColor;
   resetBoard();
-  destroyBoard();
   generateNewPuzzle();
 }
 
@@ -69,7 +69,8 @@ function stopTiming(){
 
 async function generateNewPuzzle(){
 
-  createWhiteBoard();
+  destroyBoard();
+  createBoard();
   await fetchPuzzle();
   await fetchMapping();
   setPuzzle();
@@ -80,6 +81,8 @@ function destroyBoard(){
   $("#center").empty();
   $("#left").empty();
   $("#right").empty();
+  
+  sessionStorage.removeItem('sList');
 }
 
 function resetBoard(){
@@ -101,8 +104,9 @@ function resetBoard(){
   sessionStorage.endGame = "false";
 }
 
-function createWhiteBoard(){
+function createBoard(){
 
+  var size = parseInt(sessionStorage.size);
   for (let i = 0; i < size; i++)
   {
     for (let j = 0; j < size**2; j++)
@@ -127,7 +131,7 @@ function createWhiteBoard(){
 
 async function fetchPuzzle(){
 
-  let size = parseInt(sessionStorage.size);
+  var size = parseInt(sessionStorage.size);
   if (sessionStorage.getItem(`puzzle-${size}`) == undefined)
   {    
     try 
@@ -143,7 +147,7 @@ async function fetchPuzzle(){
 
 async function fetchMapping(){
 
-  let size = parseInt(sessionStorage.size);
+  var size = parseInt(sessionStorage.size);
   if (sessionStorage.getItem(`map-${size}`) == undefined)
   {    
     try
@@ -179,7 +183,7 @@ function setPuzzle(){
 
 function setConnections(){
 
-  let size = parseInt(sessionStorage.size);
+  var size = parseInt(sessionStorage.size);
   
   if (sessionStorage.getItem(`conn-${size}`) == undefined)
   {
@@ -272,10 +276,10 @@ function checkClear(){
       block  = 3*size**2,
       finish = true;
 
+  var sPath;
   if (sessionStorage.sList == undefined) { // shortest paths
-    var sPath = new Array(cnum);
-    for (let i=0; i<cnum; i++)
-      sPath[i] = []
+    sPath = new Array(cnum);
+    for (let i=0; i<cnum; i++) sPath[i] = []
   } else { sPath = JSON.parse(sessionStorage.sList) }
 
   for (let i=0; i<cnum; i++)
@@ -291,8 +295,11 @@ function checkClear(){
     dis[oList[i*2]] = 0;
     vis[oList[i*2]] = true;
 
-    while (sPath[i].length) // reset marker
+    while (sPath[i].length)
+    { 
+      // reset marker
       $(`#${sPath[i].pop()}`).css('border-color', 'darkslategrey');
+    }
 
     while(que.length > 0 && !flag)
     {
