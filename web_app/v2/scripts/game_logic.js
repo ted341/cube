@@ -5,7 +5,7 @@ $(function(){
   
   tempSize = 3;
   sessionStorage.clear();
-  sessionStorage.cursorColor = "white";
+  sessionStorage.currentColor = "white";
   sessionStorage.size = 3;
   
   // event listeners
@@ -31,8 +31,6 @@ function changeColor(){
 
 function applySetting(){
   sessionStorage.size = tempSize;
-  //color = tempColor;
-  resetBoard();
   generateNewPuzzle();
 }
 
@@ -64,11 +62,13 @@ function startTiming(){
 }
 
 function stopTiming(){
+  if (sessionStorage.timerId == undefined) return
   clearInterval(sessionStorage.timerId);
 }
 
 async function generateNewPuzzle(){
 
+  resetStatus();
   destroyBoard();
   createBoard();
   await fetchPuzzle();
@@ -81,8 +81,6 @@ function destroyBoard(){
   $("#center").empty();
   $("#left").empty();
   $("#right").empty();
-  
-  sessionStorage.removeItem('sList');
 }
 
 function resetBoard(){
@@ -98,10 +96,15 @@ function resetBoard(){
     if (parseInt(s)+1 == sq.length) break;
   }
 
+  resetStatus();
+}
+
+function resetStatus(){
   stopTiming();
   $('#timer').html("00:00:00.000");
   sessionStorage.startGame = "false";
   sessionStorage.endGame = "false";
+  sessionStorage.removeItem('sList');
 }
 
 function createBoard(){
@@ -242,7 +245,7 @@ function colorBlock(){
   }  
 
   let clkColor = $(this).css('background-color'),
-      curColor = sessionStorage.cursorColor,
+      curColor = sessionStorage.currentColor,
       list = JSON.parse(sessionStorage.oddList);
 
   if (list.indexOf(parseInt(this.id)) > -1) // click on odds
@@ -264,7 +267,7 @@ function colorBlock(){
       stopTiming();
     }
   }
-  sessionStorage.cursorColor = curColor;
+  sessionStorage.currentColor = curColor;
 }
 
 function checkClear(){
