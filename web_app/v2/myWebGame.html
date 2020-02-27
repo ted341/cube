@@ -1,99 +1,191 @@
 <!doctype html>
 <html>
-    <head>
-        <!-- Required meta tags -->
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, shrink-to-fit=no, user-scalable=no" />
-        <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+  <head>
+    <!-- required meta tags -->
+    <meta charset="utf-8"
+          name="viewport"
+          content="width=device-width, height=device-height, initial-scale=1, user-scalable=no"
+          />
 
-        <!-- Required Stylesheets -->
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- required stylesheets -->
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"
+          />
 
-        <title>MyWebGame</title>
-        <link type="text/css" rel="stylesheet" href="styles/page_style.css" />
-    </head>
-    <body>
-        <div class="card">
-            <div class="card-header">
-                <div class="card-title"><b>Cube Connect</b></div>
-                <ul class="card-header-tabs nav nav-tabs nav-fill">
-                    <li class="nav-item"><a class="nav-link active" href="#player">PLAY A GAME</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#maker">MAKE A PUZZLE</a></li>
-                </ul>
-            </div>
-            <div id="player" class="card-body container-fluid">
-                <div id="top" class="row">
-                    <div id="timer" class="col"></div>
-                    <div id="toolbar" class="btn-group" role="group" aria-label="toolbar">
-                        <button id="retry" type="button" class="btn btn-sm"><img src="data/retry.svg" class="img-fluid" alt="retry"></button>
-                        <button id="setting" type="button" class="btn" data-toggle="modal" data-target="#exampleModalCenter"><img src="data/setting.svg" class="img-fluid" alt="setting"></button>
-                        <button id="tips" type="button" class="btn"><img src="data/info.svg" class="img-fluid" alt="info"></button>
+    <!-- tab name -->
+    <title>MyWebGame</title>
 
-                        <!-- Modal -->
-                        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalCenterTitle">Settings</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        ...
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
-                                        <button type="button" class="btn btn-success">Apply</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+    <!-- custom stylesheets -->
+    <link type="text/css"
+          rel="stylesheet"
+          href="styles/page_style.css"
+          />
+  </head>
 
-                        <div id="intro" style="display: none">
-                            <p>Welcome to my first web game!<br>Before you start, please read the following instructions first.</p>
-                            <ol>
-                                <li>Click one of the three buttons below that indicates size of the board to start a game,
-                                    you will see pairs of colored blocks with a black frame embedded in, here we call them "odd" blocks.
-                                    For those which are not odd blocks, are labelled as "even".</li>
-                                <li>Your goal is to match all the pairs through white blocks without any intersections.</li>
-                                <li>Once you click on an odd block, you are able and only be able to color the even blocks with its color by clicking them as well.
-                                    If you click on an odd block with the same color, you will be incapable of coloring other blocks.</li>
-                                <li>As you connected a pair, the shortest path between the pair would be highlighted by white border.</li>
-                                <li>If you successfully completed the level or just found it too hard for you,
-                                    you could take another challenge by clicking the size buttons below. Gameplay record will only be collected upon finishing.</li>
-                                <li>The more you play, the more grateful I am!<br>Enjoy and have fun!</li>
-                            </ol>
-                        </div>
-                        
-                    </div>
-                </div>
-                <div id="board" class="row">
-                    <div id="Center" class="col-12" align="center">
-                        <div id="center" class="facet"></div>
-                    </div>
-                    <div id="Left" class="col-6" align="right">
-                        <div id="left" class="facet"></div>
-                    </div>
-                    <div id="Right" class="col-6">
-                        <div id="right" class="facet"></div>
-                    </div>
-                </div>
-                <div id="bottom" class="row">
-                </div>
-            </div>
-            <div id="maker" class="card-body container-fluid">
-                <div class="row"><div class="col">
-                    <p>In progress...</p>
-                    </div></div>
-            </div>
+  <body>
+    <div class="card">
+
+      <div class="card-header">
+        <div class="card-title">
+          <b>Cube Connect</b>
         </div>
+        <ul class="card-header-tabs nav nav-tabs nav-fill">
+          <li class="nav-item">
+            <a class="nav-link active" href="#player">PLAY A GAME</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#maker">MAKE A PUZZLE</a>
+          </li>
+        </ul>
+      </div><!-- card-header -->
 
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+      <div id="player" class="card-body container-fluid">
 
-        <script src="scripts/style_class.js"></script>
-        <script src="scripts/game_logic.js"></script>
-    </body>
+        <div id="top" class="row">
+          <div id="timer" class="col">00:00:00.000</div>
+          <div id="toolbar" class="btn-group" role="group">
+
+            <button id="retry" 
+                    type="button" 
+                    class="btn btn-sm">
+              <img src="data/retry.svg" class="img-fluid" alt="retry">
+            </button>
+            <button id="setting" 
+                    type="button" 
+                    class="btn" 
+                    data-toggle="modal" 
+                    data-target="#modalSetting">
+              <img src="data/setting.svg" class="img-fluid" alt="setting">
+            </button>
+            <button id="tips" 
+                    type="button" 
+                    class="btn" 
+                    data-toggle="modal" 
+                    data-target="#modalInfo">
+              <img src="data/info.svg" class="img-fluid" alt="info">
+            </button>
+
+          </div>
+        </div><!-- top -->
+
+        <div id="board" class="row">
+
+          <div class="col-12 segment" align="center">
+            <div id="center" class="facet"></div>
+          </div>
+
+          <div class="col-6 segment" align="right">
+            <div id="left" class="facet"></div>
+          </div>
+
+          <div class="col-6 segment" align="left">
+            <div id="right" class="facet"></div>
+          </div>
+
+        </div><!-- board -->
+
+        <div id="bottom" class="row"></div>
+
+      </div><!-- player -->
+
+      <div id="maker" class="card-body container-fluid">
+        <div class="row">
+          <div class="col">
+            <p>In progress...</p>
+          </div>
+        </div>
+      </div><!-- maker -->
+
+    </div><!-- card -->
+
+    <div class="modal fade" id="modalSetting" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Settings</h5>
+            <button type="button" class="close" data-dismiss="modal">
+              <span>&times;</span>
+            </button>
+          </div>
+
+          <div class="modal-body">
+            <div class="container-fluid">
+              <div id="size" class="row mb-3">
+                <div class="col-4">Size</div>
+                <div class="col-8">
+
+                  <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-outline-secondary" data-size="3">3</button>
+                    <button type="button" class="btn btn-outline-secondary" data-size="4">4</button>
+                    <button type="button" class="btn btn-outline-secondary" data-size="5">5</button>
+                  </div>
+
+                </div>
+              </div>
+              <div id="color" class="row mb-3">
+                <div class="col-4">Color</div>
+                <div class="col-8">
+
+                  <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-outline-secondary" data-color="4">4</button>
+                    <button type="button" class="btn btn-outline-secondary" data-color="5">5</button>
+                    <button type="button" class="btn btn-outline-secondary" data-color="6">6</button>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+              <button id="apply" type="button" class="btn btn-success" data-dismiss="modal">Apply</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><!-- modal -->
+
+    <div class="modal fade" id="modalInfo" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Info</h5>
+            <button type="button" class="close" data-dismiss="modal">
+              <span>&times;</span>
+            </button>
+          </div>
+
+          <div class="modal-body">
+            <p>Welcome to my first web game!<br>Before you start, please read the following instructions first.</p>
+            <ol>
+              <li>Click one of the three buttons below that indicates size of the board to start a game, you will see pairs of colored blocks with a black frame embedded in, here we call them "odd" blocks. For those which are not odd blocks, are labelled as "even".</li>
+              <li>Your goal is to match all the pairs through white blocks without any intersections.</li>
+              <li>Once you click on an odd block, you are able and only be able to color the even blocks with its color by clicking them as well. If you click on an odd block with the same color, you will be incapable of coloring other blocks.</li>
+              <li>As you connected a pair, the shortest path between the pair would be highlighted by white border.</li>
+              <li>If you successfully completed the level or just found it too hard for you, you could take another challenge by clicking the size buttons below. Gameplay record will only be collected upon finishing.</li>
+              <li>The more you play, the more grateful I am! Enjoy and have fun!</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div><!-- modal -->
+
+    <!-- required scripts -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" 
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous">
+    </script>
+
+    <!-- custom scripts-->
+    <script src="scripts/style_class.js"></script>
+    <script src="scripts/game_logic.js"></script>
+
+  </body>
 </html>

@@ -1,64 +1,87 @@
 html, body, .card {
-    min-height: 100vh;
+  min-height: 100vh;
+  min-width: 300px;
 }
 
 #maker {
-    display: none; /*initial*/
+  display: none; /*initial*/
 }
 
 #player {
-    height: 100%;
+  height: 100%;
 }
 
 #center {
-    top: 20%;
-    transform: skew(60deg, -30deg)
-               scale(1, 0.57735) /*tan30*/
-               rotate(-90deg);
+  top: 20%;
+  transform:
+    skew(60deg, -30deg)
+    scale(1, 0.57735) /*tan30*/
+    rotate(-90deg);
 }
 
 #left {
-    position: relative;
-    top: -40px;
-    transform: skew(0deg, 30deg)
-               rotate(90deg);
+  position: relative;
+  top: -40px;
+  transform:
+    skew(0deg, 30deg)
+    rotate(90deg);
 }
-    
+
 #right {
-    position: relative;
-    top: -40px;
-    transform: skew(0deg, -30deg);
+  
+  position: relative;
+  top: -40px;
+  transform: skew(0deg, -30deg);
 }
 
 .facet {
-    width: 180px;
-    height: 180px;
+  width: 180px;
+  height: 180px;
 }
 /*
 .odd {
-  background-image: url("../data/frame.png");
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-size: 50%;
+background-image: url("../data/frame.png");
+background-position: center center;
+background-repeat: no-repeat;
+background-size: 50%;
 }
 */
-#Left, #Right {
-    padding: 0;
+.segment {
+  padding: 0;
 }
 
 .block {
-    position: relative;
-    float: left;
-    background-color: white;
-    border-color: darkslategrey;
-    border-style: solid;
-    margin: 0;
+  position: relative;
+  float: left;
+  background-color: white;
+  border-color: darkslategrey;
+  border-style: solid;
+  margin: 0;
 }
 
 
 #timer {
-    font-family: Arial, sans-serif;
-    font-weight: bold;
-    font-size: 25px;
-    color: darkgrey;
+  font-family: Arial, sans-serif;
+  font-weight: bold;
+  font-size: 25px;
+  color: darkgrey;
+  line-height: 100%;
+}
+
+#modalInfo p {
+  font-weight: bold;
+}
+
+#modalSetting div[class="col-4"] {
+  text-align: center;
+  vertical-align: middle;
+  font-weight: bold;
+}
+
+/* critical for vertical text align */
+#modalSetting div[class="col-4"]:before {
+  content: '';
+  display: inline-block;
+  vertical-align: middle ;
+  height: 100%;
 }
